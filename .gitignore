@@ -1,7 +1,18 @@
+# Database
 db.sqlite3
+db.sqlite3-journal
 
+# Virtual environment
 venv/
-.env.env
-__pycache__/
+ENV/
+env/
+.venv/
+
+# Environment variables
 .env
 
+# Python cache
+__pycache__/
+
+# Logs
+*.log
