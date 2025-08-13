@@ -3,21 +3,17 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 
-# Load .env in local development
+# Load environment variables from .env
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Secret Key from environment (for security)
+# SECURITY SETTINGS
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")
-
-# Debug mode from environment
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
-
-# Allowed hosts from environment (comma-separated string → list)
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
-# Installed apps
+# INSTALLED APPS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,10 +24,10 @@ INSTALLED_APPS = [
     'webscrapper',
 ]
 
-# Middleware
+# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serves static files in production
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,15 +55,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'websracping_backend.wsgi.application'
 
-# Database → PostgreSQL on Railway, SQLite locally
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-        conn_max_age=600
-    )
-}
+# DATABASE CONFIG
+if os.environ.get("DATABASE_URL"):
+    # Use PostgreSQL from DATABASE_URL in production
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.environ.get("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Use SQLite locally
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
-# Password validators
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -75,20 +82,21 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
+# INTERNATIONALIZATION
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# STATIC FILES
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# DEFAULT PRIMARY KEY FIELD TYPE
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# External API Keys from environment
+# EXTERNAL API KEYS
 ACCOUNT_SID = os.environ.get("ACCOUNT_SID")
 AUTH_TOKEN = os.environ.get("AUTH_TOKEN")
 TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
