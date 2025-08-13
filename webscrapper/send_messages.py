@@ -12,14 +12,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Get Twilio credentials from .env
-account_sid = os.getenv("ACCOUNT_SID")
-auth_token = os.getenv("AUTH_TOKEN")
+account_sid = os.getenv("ACCOUNT_SID").strip()
+auth_token = os.getenv("AUTH_TOKEN").strip()
 
 # ----------------------------
 # Set up Django environment
 # ----------------------------
 sys.path.append(BASE_DIR)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webscrapping_backend.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "websracping_backend.settings")
 django.setup()
 
 from webscrapper.db_hits import get_data
