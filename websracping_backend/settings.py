@@ -1,3 +1,4 @@
+from logging import DEBUG
 from pathlib import Path
 import os
 import dj_database_url
@@ -10,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY SETTINGS
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = os.environ.get("DEBUG")
 # ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 ALLOWED_HOSTS = ["*"]
 
@@ -102,3 +103,6 @@ ACCOUNT_SID = os.environ.get("ACCOUNT_SID")
 AUTH_TOKEN = os.environ.get("AUTH_TOKEN")
 TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+
+CSRF_TRUSTED_ORIGINS = ['https://webscarpandmessages-production.up.railway.app']

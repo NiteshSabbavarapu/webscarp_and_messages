@@ -22,5 +22,6 @@ from webscrapper.webhook_respond import whatsapp_webhook
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("webhook/", whatsapp_webhook, name="whatsapp_webhook"),
+    # path('', views.home, name='home'),
 
 ]
